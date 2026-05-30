@@ -190,5 +190,5 @@ ai-check.js
 如果你手动使用，可以把下面这段直接给 AI：
 
 ```text
-开发完成后只能使用 ./agent/verify 下的脚本验证。后端改动按是否写测试选择 mvn-compile.sh 或 mvn-test.sh；前端改动执行 node ./agent/verify/scripts/vue/ai-check.js，可传入本次改动文件。用户强制要求构建验证时追加 --build；用户强制要求页面自动化验证时追加 --page。若前端脚本提示缺少 Playwright，先执行 bash ./agent/verify/scripts/install-vue-check-deps.sh。不要直接运行 mvn、pnpm、npm、tsc、eslint 作为最终验证命令。
+开发完成后只能使用 ./agent/verify 下的脚本验证。后端改动按是否写测试选择 mvn-compile.sh 或 mvn-test.sh；若后端 pom.xml 不在项目根目录，使用 -r/--root 指定后端目录；前端改动执行 node ./agent/verify/scripts/vue/ai-check.js，可传入本次改动文件，前端目录以 ai-config.json 的 frontendDir 为准。用户强制要求构建验证时追加 --build；用户强制要求页面自动化验证时追加 --page。若前端脚本提示缺少 Playwright，先执行 bash ./agent/verify/scripts/install-vue-check-deps.sh。不要直接运行 mvn、pnpm、npm、tsc、eslint 作为最终验证命令。
 ```

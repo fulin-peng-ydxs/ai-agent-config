@@ -2,7 +2,9 @@
 
 set -e
 
-ROOT_DIR=${ROOT_DIR:-$(pwd)}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_ROOT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
+ROOT_DIR=${ROOT_DIR:-$DEFAULT_ROOT_DIR}
 CONFIG_FILE="$ROOT_DIR/agent/verify/scripts/vue/ai-config.json"
 
 # 该脚本只负责安装浏览器巡检所需依赖，不参与每次验证主流程。

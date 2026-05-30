@@ -26,6 +26,13 @@ ROOT_DIR=/path/to/project bash ./agent/verify/scripts/java/mvn-compile.sh
 ROOT_DIR=/path/to/project bash ./agent/verify/scripts/install-vue-check-deps.sh
 ```
 
+后端不在项目根目录时，用 `-r/--root` 指定 Maven 项目目录：
+
+```bash
+bash ./agent/verify/scripts/java/mvn-compile.sh -r backend-service
+bash ./agent/verify/scripts/java/mvn-test.sh -r backend-service
+```
+
 ## 2. `frontendDir` 配错
 
 配置位置：
@@ -35,6 +42,18 @@ ROOT_DIR=/path/to/project bash ./agent/verify/scripts/install-vue-check-deps.sh
 ```
 
 该路径相对项目根目录。
+
+前后端放一起时，`frontendDir` 可以直接填服务目录，例如：
+
+```json
+"frontendDir": "service-a"
+```
+
+前后端分开时，填实际前端目录，例如：
+
+```json
+"frontendDir": "service-a/web"
+```
 
 如果目录不存在，会影响：
 
@@ -162,7 +181,22 @@ bash ./agent/verify/scripts/java/mvn-test.sh -s /path/to/settings.xml
 
 如果传入的 `settings.xml` 不存在，Maven 会报错。脚本只负责把 `-s` 参数传给 Maven，不提前校验文件存在性。
 
-## 8. `ROOT_DIR` 配错
+## 8. 后端目录不在项目根目录
+
+如果项目根目录没有 `pom.xml`，但某个后端子目录有 `pom.xml`，后端脚本需要指定 Maven 项目目录：
+
+```bash
+bash ./agent/verify/scripts/java/mvn-compile.sh -r backend-service
+bash ./agent/verify/scripts/java/mvn-test.sh -r backend-service
+```
+
+`-r/--root` 可以是相对项目根目录的路径，也可以是绝对路径。多模块后端仍然可以继续叠加 `-m`：
+
+```bash
+bash ./agent/verify/scripts/java/mvn-compile.sh -r backend-service -m module-name
+```
+
+## 9. `ROOT_DIR` 配错
 
 Shell 脚本支持：
 
@@ -177,7 +211,7 @@ ROOT_DIR=/path/to/project bash ./agent/verify/scripts/java/mvn-compile.sh
 - 找不到 `agent/verify/scripts/vue/ai-config.json`
 - 前端目录解析错误
 
-## 9. `ai-check.js` 文件参数传错
+## 10. `ai-check.js` 文件参数传错
 
 示例：
 
@@ -199,7 +233,7 @@ no frontend changed files
 - 确认文件是否位于 `frontendDir` 下
 - 确认扩展名是否属于脚本识别范围：`.vue`、`.ts`、`.tsx`、`.js`、`.jsx`、`.css`、`.less`、`.scss`
 
-## 10. 建议排查顺序
+## 11. 建议排查顺序
 
 1. 先执行配置自检：
 
@@ -227,6 +261,6 @@ node ./agent/verify/scripts/check-verify-config.js
 4. 若后端验证失败，检查：
 
 - 是否在项目根目录执行
-- `pom.xml` 是否存在
+- `pom.xml` 是否在项目根目录，若在后端子目录则使用 `-r/--root`
 - 是否需要 `-s /path/to/settings.xml`
 - 是否需要 `-m 模块名`
