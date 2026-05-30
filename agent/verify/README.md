@@ -7,7 +7,7 @@
 1. 复制 `agent/verify` 到新项目根目录。
 2. 先按项目原有方式安装前端依赖，例如在前端目录执行 `pnpm install`、`npm install` 或 `yarn install`。
 3. 修改 `scripts/vue/ai-config.json`：
-   - `frontendDir`：前端目录。
+   - `frontendDir`：前端目录。前后端放一起时可填服务目录；前后端分开时填独立前端目录。
    - `devCommand`：前端开发服务启动命令。
    - `baseUrl`：动态地址解析失败时的兜底地址。
    - `routerConfigFiles`：Vue Router 配置文件路径。
@@ -29,17 +29,19 @@
 
 ### 补充说明
 
-- 路径、目录、配置文件找不到等问题，先查看 [PATH-TROUBLESHOOTING.md](./PATH-TROUBLESHOOTING.md)。
+- 路径、目录、配置文件找不到等问题，先查看 [PATH-TROUBLESHOOTING.md](PATH-TROUBLESHOOTING.md)。
 
 ## 后端脚本
 
 - `scripts/java/mvn-compile.sh`：编译后端代码。
   - 全量编译：`bash ./agent/verify/scripts/java/mvn-compile.sh`
+  - 后端在子目录：`bash ./agent/verify/scripts/java/mvn-compile.sh -r 后端目录`
   - 指定模块：`bash ./agent/verify/scripts/java/mvn-compile.sh -m 模块名`
   - 清理后编译：`bash ./agent/verify/scripts/java/mvn-compile.sh --clean`
   - 指定 Maven settings：`bash ./agent/verify/scripts/java/mvn-compile.sh -s /path/to/settings.xml`
 - `scripts/java/mvn-test.sh`：运行后端测试。
   - 全量测试：`bash ./agent/verify/scripts/java/mvn-test.sh`
+  - 后端在子目录：`bash ./agent/verify/scripts/java/mvn-test.sh -r 后端目录`
   - 指定模块：`bash ./agent/verify/scripts/java/mvn-test.sh -m 模块名`
   - 指定测试类：`bash ./agent/verify/scripts/java/mvn-test.sh -c 测试类名`
   - 指定测试方法：`bash ./agent/verify/scripts/java/mvn-test.sh -c 测试类名 --method 方法名`
@@ -149,6 +151,8 @@ ai-check.js
 
 - `scripts/vue/ai-config.json`
   - `frontendDir`：前端目录。
+    - 前后端同目录时填类似 `service-a`。
+    - 前后端分目录时填类似 `service-a/web` 或 `frontend-app`。
   - `devCommand`：启动开发服务的命令，执行目录为 `frontendDir`。
   - `baseUrl`：页面校验兜底访问地址；正常情况下优先使用动态解析出的地址。
   - `runtimeBaseUrlPath`：`start-dev.js` 写入动态访问地址的位置。

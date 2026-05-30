@@ -301,9 +301,22 @@ function checkMaven() {
         warn('当前环境找不到 mvn 命令，也未发现 mvnw');
     }
 
-    exists(path.resolve(rootDir, 'pom.xml'))
-        ? pass('pom.xml 存在')
-        : warn('pom.xml 不存在；Java 验证脚本可能不适用于当前项目');
+    if (exists(path.resolve(rootDir, 'pom.xml'))) {
+        pass('pom.xml 存在');
+        return;
+    }
+
+    const childPomDirs = fs.readdirSync(rootDir, { withFileTypes: true })
+        .filter(entry => entry.isDirectory())
+        .map(entry => entry.name)
+        .filter(name => !['.git', '.idea', 'agent', 'node_modules'].includes(name))
+        .filter(name => exists(path.resolve(rootDir, name, 'pom.xml')));
+
+    if (childPomDirs.length) {
+        warn(`根目录未发现 pom.xml，但发现后端子目录：${childPomDirs.join(', ')}；Java 脚本请使用 -r/--root 指定后端目录`);
+    } else {
+        warn('pom.xml 不存在；Java 验证脚本可能不适用于当前项目');
+    }
 }
 
 function main() {

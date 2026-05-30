@@ -6,7 +6,9 @@ set -e
 # AI Compile Script
 ############################################
 
-ROOT_DIR=${ROOT_DIR:-$(pwd)}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_ROOT_DIR="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+ROOT_DIR=${ROOT_DIR:-$DEFAULT_ROOT_DIR}
 
 cd "$ROOT_DIR"
 
@@ -15,13 +17,14 @@ cd "$ROOT_DIR"
 ############################################
 
 MODULE=""
+PROJECT_ROOT="$ROOT_DIR"
 PROFILE=""
 THREADS="1C"
 SKIP_TESTS="true"
 OFFLINE="false"
 CLEAN="false"
 VERBOSE="false"
-SETTINGS="/Users/pengshuaifeng/works/applications/apache-maven-3.6.3/conf/settings_gzzn.xml"
+SETTINGS="${MAVEN_SETTINGS:-}"
 EXTRA_ARGS=""
 
 ############################################
@@ -34,6 +37,7 @@ usage() {
   echo "  bash ./agent/verify/scripts/java/mvn-compile.sh [options]"
   echo ""
   echo "Options:"
+  echo "  -r, --root          Maven 项目根目录，适用于后端在子目录的项目"
   echo "  -m, --module        指定模块"
   echo "  -p, --profile       Spring profile"
   echo "  -t, --threads       Maven线程数 (默认1C)"
@@ -46,6 +50,7 @@ usage() {
   echo ""
   echo "Examples:"
   echo "  bash ./agent/verify/scripts/java/mvn-compile.sh"
+  echo "  bash ./agent/verify/scripts/java/mvn-compile.sh -r backend-service"
   echo "  bash ./agent/verify/scripts/java/mvn-compile.sh -m module-name"
   echo "  bash ./agent/verify/scripts/java/mvn-compile.sh --clean"
   echo "  bash ./agent/verify/scripts/java/mvn-compile.sh -p dev"
@@ -60,6 +65,10 @@ usage() {
 
 while [[ $# -gt 0 ]]; do
   case $1 in
+    -r|--root|--backend-dir)
+      PROJECT_ROOT="$2"
+      shift 2
+      ;;
     -m|--module)
       MODULE="$2"
       shift 2
@@ -108,9 +117,15 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
+if [[ "$PROJECT_ROOT" != /* ]]; then
+  PROJECT_ROOT="$ROOT_DIR/$PROJECT_ROOT"
+fi
+
 ############################################
 # 自动识别 Maven
 ############################################
+
+cd "$PROJECT_ROOT"
 
 if [ -f "./mvnw" ]; then
   MVN="./mvnw"
