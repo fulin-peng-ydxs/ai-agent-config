@@ -272,6 +272,10 @@ function runTypecheck(command, args, options) {
 
     if (relatedOutput) {
         console.error(relatedOutput);
+    } else if (result.output.trim()) {
+        console.error(result.output.trim());
+    } else {
+        console.error('typecheck failed without stdout or stderr output');
     }
 
     throw new Error('typecheck failed');
