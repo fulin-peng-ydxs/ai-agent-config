@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
 set -e
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+if [[ "$SCRIPT_PATH" == */* ]]; then
+  SCRIPT_DIR="$(cd "${SCRIPT_PATH%/*}" && pwd)"
+else
+  SCRIPT_DIR="$(pwd)"
+fi
 DEFAULT_ROOT_DIR="$(cd "$SCRIPT_DIR/../../.." && pwd)"
 ROOT_DIR=${ROOT_DIR:-$DEFAULT_ROOT_DIR}
 CONFIG_FILE="$ROOT_DIR/agent/verify/scripts/vue/ai-config.json"

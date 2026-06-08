@@ -22,7 +22,9 @@ bash ./agent/verify/scripts/java/mvn-test.sh -r 后端目录 -m 模块名
 
 - 普通 Vue 页面、组件、样式改动：`node ./agent/verify/scripts/vue/ai-check.js 改动文件路径`
 - 不传文件路径：脚本自动读取 Git 工作区中的前端改动
+- 命令通常从项目根目录发起，便于使用 `./agent/...` 相对路径定位脚本
 - 前端目录以 `agent/verify/scripts/vue/ai-config.json` 的 `frontendDir` 为准
+- `package.json`、锁文件、`node_modules` 和本地 `.bin` 均按 `frontendDir` 解析，不要求位于项目根目录
 - 前后端放一起时：`frontendDir` 可指向服务目录
 - 前后端分开时：`frontendDir` 应指向实际前端目录
 - 传入文件路径：必须相对项目根目录，且位于 `frontendDir` 下

@@ -168,18 +168,74 @@ agent/verify/.auth/
 agent/verify/screenshots/
 ```
 
-## 7. Maven settings 路径错误
+## 7. Java/Maven 环境路径问题
 
-后端脚本支持可选 settings：
+后端脚本内部会先补最小系统 PATH：
+
+```text
+/usr/bin:/bin:/usr/sbin:/sbin
+```
+
+这样即使 AI 运行命令时环境里的 `PATH` 很短，基础命令如 `dirname`、`node`、`npm`、`bash` 仍然更容易被找到。
+
+Java 默认根目录：
+
+```text
+/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home
+```
+
+Maven 默认根目录：
+
+```text
+/Users/pengshuaifeng/works/applications/apache-maven-3.6.3
+```
+
+后端脚本默认会按以下顺序查找 Maven：
+
+1. 当前项目下的 `./mvnw`
+2. `--maven-home` 或默认根目录 `/Users/pengshuaifeng/works/applications/apache-maven-3.6.3/bin/mvn`
+3. 当前 `PATH` 中的 `mvn`
+
+Java 默认会优先使用脚本导出的 `JAVA_HOME/bin`，即：
+
+```text
+/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home/bin
+```
+
+也可以手动指定 Java 和 Maven 根目录：
+
+```bash
+bash ./agent/verify/scripts/java/mvn-compile.sh --java-home /path/to/jdk-home --maven-home /path/to/apache-maven
+bash ./agent/verify/scripts/java/mvn-test.sh --java-home /path/to/jdk-home --maven-home /path/to/apache-maven
+```
+
+只指定 Maven 根目录也可以：
+
+```bash
+bash ./agent/verify/scripts/java/mvn-compile.sh --maven-home /path/to/apache-maven
+bash ./agent/verify/scripts/java/mvn-test.sh --maven-home /path/to/apache-maven
+```
+
+settings 仍然支持单独指定：
 
 ```bash
 bash ./agent/verify/scripts/java/mvn-compile.sh -s /path/to/settings.xml
 bash ./agent/verify/scripts/java/mvn-test.sh -s /path/to/settings.xml
 ```
 
-默认不使用 settings 参数。
+默认 settings 路径为：
+
+```text
+/Users/pengshuaifeng/works/applications/apache-maven-3.6.3/conf/settings_gzzn.xml
+```
 
 如果传入的 `settings.xml` 不存在，Maven 会报错。脚本只负责把 `-s` 参数传给 Maven，不提前校验文件存在性。
+
+如果固定 JDK 或 Maven 路径本身不存在，常见表现包括：
+
+- `Maven executable not found. Checked ./mvnw, PATH mvn, and .../bin/mvn`
+- `The JAVA_HOME environment variable is not defined correctly`
+- `java: command not found`
 
 ## 8. 后端目录不在项目根目录
 
@@ -240,6 +296,13 @@ no frontend changed files
 ```bash
 node ./agent/verify/scripts/check-verify-config.js
 ```
+
+2. 若后端脚本报找不到 `mvn` 或 `java`，优先检查：
+
+- 默认 JDK 目录是否存在：`/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home`
+- 默认 Maven 目录是否存在：`/Users/pengshuaifeng/works/applications/apache-maven-3.6.3`
+- 是否需要用 `--java-home` 或 `--maven-home` 覆盖
+- 是否需要用 `-s /path/to/settings.xml`
 
 2. 若自检提示前端配置问题，优先检查：
 

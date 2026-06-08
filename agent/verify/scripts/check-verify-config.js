@@ -7,6 +7,8 @@ const rootDir = path.resolve(__dirname, '../../..');
 const verifyDir = path.resolve(rootDir, 'agent/verify');
 const vueScriptDir = path.resolve(verifyDir, 'scripts/vue');
 const configPath = path.resolve(vueScriptDir, 'ai-config.json');
+const defaultJavaHome = '/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home';
+const defaultMavenHome = '/Users/pengshuaifeng/works/applications/apache-maven-3.6.3';
 
 let failCount = 0;
 let warnCount = 0;
@@ -292,13 +294,25 @@ function checkPageCheck(config) {
 
 function checkMaven() {
 
-    // 后端脚本只依赖 mvn/mvnw 和 pom.xml；这里只判断是否具备基本执行条件。
+    // 后端脚本会先尝试 mvnw，再尝试 PATH 中的 mvn，最后回退到固定 Maven/JDK 路径。
     if (exists(path.resolve(rootDir, 'mvnw'))) {
         pass('Maven Wrapper 存在：mvnw');
     } else if (commandExists('mvn')) {
         pass('mvn 命令可用');
+    } else if (exists(path.resolve(defaultMavenHome, 'bin/mvn'))) {
+        pass(`默认 Maven 可执行文件存在：${defaultMavenHome}/bin/mvn`);
     } else {
-        warn('当前环境找不到 mvn 命令，也未发现 mvnw');
+        warn(`当前环境找不到 mvn 命令，也未发现 mvnw，默认 Maven 也不存在：${defaultMavenHome}/bin/mvn`);
+    }
+
+    if (process.env.JAVA_HOME && exists(path.resolve(process.env.JAVA_HOME, 'bin/java'))) {
+        pass(`JAVA_HOME 可用：${process.env.JAVA_HOME}`);
+    } else if (commandExists('java')) {
+        pass('java 命令可用');
+    } else if (exists(path.resolve(defaultJavaHome, 'bin/java'))) {
+        pass(`默认 JAVA_HOME 可执行文件存在：${defaultJavaHome}/bin/java`);
+    } else {
+        warn(`当前环境找不到 java 命令，JAVA_HOME 也不可用，默认 JDK 也不存在：${defaultJavaHome}/bin/java`);
     }
 
     if (exists(path.resolve(rootDir, 'pom.xml'))) {

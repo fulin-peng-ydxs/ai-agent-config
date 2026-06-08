@@ -38,7 +38,14 @@
   - 后端在子目录：`bash ./agent/verify/scripts/java/mvn-compile.sh -r 后端目录`
   - 指定模块：`bash ./agent/verify/scripts/java/mvn-compile.sh -m 模块名`
   - 清理后编译：`bash ./agent/verify/scripts/java/mvn-compile.sh --clean`
+  - 默认 JDK 根目录：`/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home`
+  - 默认 Maven 根目录：`/Users/pengshuaifeng/works/applications/apache-maven-3.6.3`
+  - 默认 Maven settings：`/Users/pengshuaifeng/works/applications/apache-maven-3.6.3/conf/settings_gzzn.xml`
+  - 指定 JDK 根目录：`bash ./agent/verify/scripts/java/mvn-compile.sh --java-home /path/to/jdk-home`
+  - 指定 Maven 根目录：`bash ./agent/verify/scripts/java/mvn-compile.sh --maven-home /path/to/apache-maven`
   - 指定 Maven settings：`bash ./agent/verify/scripts/java/mvn-compile.sh -s /path/to/settings.xml`
+  - Maven 查找顺序：`./mvnw` -> `--maven-home` 或默认 Maven 根目录 -> `PATH` 中的 `mvn`
+  - Java 查找顺序：脚本导出的 `JAVA_HOME/bin` -> `PATH` 中的 `java`
 - `scripts/java/mvn-test.sh`：运行后端测试。
   - 全量测试：`bash ./agent/verify/scripts/java/mvn-test.sh`
   - 后端在子目录：`bash ./agent/verify/scripts/java/mvn-test.sh -r 后端目录`
@@ -46,7 +53,14 @@
   - 指定测试类：`bash ./agent/verify/scripts/java/mvn-test.sh -c 测试类名`
   - 指定测试方法：`bash ./agent/verify/scripts/java/mvn-test.sh -c 测试类名 --method 方法名`
   - 指定模块和方法：`bash ./agent/verify/scripts/java/mvn-test.sh -m 模块名 -c 测试类名 --method 方法名`
+  - 默认 JDK 根目录：`/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home`
+  - 默认 Maven 根目录：`/Users/pengshuaifeng/works/applications/apache-maven-3.6.3`
+  - 默认 Maven settings：`/Users/pengshuaifeng/works/applications/apache-maven-3.6.3/conf/settings_gzzn.xml`
+  - 指定 JDK 根目录：`bash ./agent/verify/scripts/java/mvn-test.sh --java-home /path/to/jdk-home`
+  - 指定 Maven 根目录：`bash ./agent/verify/scripts/java/mvn-test.sh --maven-home /path/to/apache-maven`
   - 指定 Maven settings：`bash ./agent/verify/scripts/java/mvn-test.sh -s /path/to/settings.xml`
+  - Maven 查找顺序：`./mvnw` -> `--maven-home` 或默认 Maven 根目录 -> `PATH` 中的 `mvn`
+  - Java 查找顺序：脚本导出的 `JAVA_HOME/bin` -> `PATH` 中的 `java`
 
 ## 前端脚本
 
@@ -65,7 +79,7 @@
   - 作用：扫描 `ai-config.json.routerConfigFiles` 中的路由组件，增量更新 `scripts/vue/page-map.json`。
 - `scripts/check-verify-config.js`：验证脚本配置自检。
   - 执行：`node ./agent/verify/scripts/check-verify-config.js`
-  - 作用：检查前端目录、启动命令、检查脚本、路由文件、认证配置、Playwright、Maven 等是否明显不合理。
+  - 作用：检查前端目录、启动命令、检查脚本、路由文件、认证配置、Playwright、Maven、JAVA_HOME 等是否明显不合理。
 
 ## 前端脚本架构
 

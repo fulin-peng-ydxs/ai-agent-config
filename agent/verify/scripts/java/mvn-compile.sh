@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
 set -e
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
 
 ############################################
 # AI Compile Script
 ############################################
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+if [[ "$SCRIPT_PATH" == */* ]]; then
+  SCRIPT_DIR="$(cd "${SCRIPT_PATH%/*}" && pwd)"
+else
+  SCRIPT_DIR="$(pwd)"
+fi
 DEFAULT_ROOT_DIR="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
 ROOT_DIR=${ROOT_DIR:-$DEFAULT_ROOT_DIR}
 
@@ -24,7 +30,9 @@ SKIP_TESTS="true"
 OFFLINE="false"
 CLEAN="false"
 VERBOSE="false"
-SETTINGS="${MAVEN_SETTINGS:-}"
+JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home"
+MAVEN_HOME="/Users/pengshuaifeng/works/applications/apache-maven-3.6.3"
+SETTINGS="/Users/pengshuaifeng/works/applications/apache-maven-3.6.3/conf/settings_gzzn.xml"
 EXTRA_ARGS=""
 
 ############################################
@@ -44,7 +52,9 @@ usage() {
   echo "  --skip-tests        是否跳过测试 (默认true)"
   echo "  --offline           离线模式"
   echo "  --clean             clean compile"
-  echo "  -s, --settings      Maven settings.xml 路径（默认不使用）"
+  echo "  --java-home         JDK 根目录（默认 /Library/Java/JavaVirtualMachines/jdk-1.8.jdk/Contents/Home）"
+  echo "  --maven-home        Maven 安装根目录（默认 /Users/pengshuaifeng/works/applications/apache-maven-3.6.3）"
+  echo "  -s, --settings      Maven settings.xml 路径（默认 /Users/pengshuaifeng/works/applications/apache-maven-3.6.3/conf/settings_gzzn.xml）"
   echo "  -v, --verbose       显示详细日志"
   echo "  --extra             额外Maven参数"
   echo ""
@@ -93,6 +103,14 @@ while [[ $# -gt 0 ]]; do
       CLEAN="true"
       shift
       ;;
+    --java-home)
+      JAVA_HOME="$2"
+      shift 2
+      ;;
+    --maven-home)
+      MAVEN_HOME="$2"
+      shift 2
+      ;;
     -s|--settings)
       SETTINGS="$2"
       shift 2
@@ -121,6 +139,9 @@ if [[ "$PROJECT_ROOT" != /* ]]; then
   PROJECT_ROOT="$ROOT_DIR/$PROJECT_ROOT"
 fi
 
+export JAVA_HOME
+export PATH="$JAVA_HOME/bin:$MAVEN_HOME/bin:/usr/bin:/bin:/usr/sbin:/sbin${PATH:+:$PATH}"
+
 ############################################
 # 自动识别 Maven
 ############################################
@@ -129,8 +150,13 @@ cd "$PROJECT_ROOT"
 
 if [ -f "./mvnw" ]; then
   MVN="./mvnw"
-else
+elif [ -x "$MAVEN_HOME/bin/mvn" ]; then
+  MVN="$MAVEN_HOME/bin/mvn"
+elif command -v mvn >/dev/null 2>&1; then
   MVN="mvn"
+else
+  echo "Maven executable not found. Checked ./mvnw, PATH mvn, and $MAVEN_HOME/bin/mvn"
+  exit 1
 fi
 
 ############################################
