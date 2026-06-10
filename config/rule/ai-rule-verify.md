@@ -3,6 +3,7 @@
 - 总规则：任何 AI 代码改动验证只能调用 `agent/verify/scripts` 下的脚本
 - 禁止：不得直接以 `mvn`、`pnpm`、`npm`、`tsc`、`eslint` 等自由命令作为最终验证
 
+
 ### 后端验证
 
 - 普通 Java 代码改动：`bash ./agent/verify/scripts/java/mvn-compile.sh`
@@ -49,3 +50,10 @@ node ./agent/verify/scripts/vue/ai-check.js --build --page 改动文件路径
 ```
 
 - 注意：`pnpm build` 可能改写 `src/main/resources/static/`，不要直接执行；需要构建时统一使用 `ai-check.js --build`
+
+
+## UI 改动验证
+
+- 涉及页面、组件、样式、布局、表格、列表、弹窗、抽屉等前端 UI 改动时，除常规脚本校验外，还必须对照项目根目录 `DESIGN.md` 做一致性验证。
+- 如果 `DESIGN.md` 已定义相关规范，出现冲突实现时视为未通过，不直接交付。
+- 如果 `DESIGN.md` 未覆盖当前 UI 场景，应先补齐规范或经用户确认后再交付，不再临时自创一套验证口径。
