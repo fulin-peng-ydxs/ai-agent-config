@@ -17,7 +17,7 @@
 - 禁止：禁止使用 `feature`、`update`、`code-change`、`development-trace` 等泛名
 - 复用：已有开发计划、留痕、核查、SQL 或目录使用过的 slug，后续同一功能必须沿用
 - 确认：中文业务名不稳定时，先给出建议 slug，并等待用户确认
-- 占位：`{feature-slug}` 表示功能或需求，`{plan-slug}` 表示开发计划主题，`{sql-purpose}` 表示 SQL 用途
+- 占位：`{feature-slug}` 表示功能或需求，`{sql-purpose}` 表示 SQL 用途
 
 ### 语言与会话命名
 - 语言：除命令、代码、日志、文件原文外，所有会话交互必须使用简体中文
