@@ -1,7 +1,7 @@
 # 通用协作规则
-- 具体执行红线统一维护在同级目录 `force/collaboration-rule.md`
-- 代码开发、文档编写等相关任务时，必须读取并遵守 `force/collaboration-rule.md`。
-- `force/collaboration-rule.md` 为最低优先级兜底规则；若本文件、项目规则或用户明确要求与其冲突，优先遵守更具体的约束。
+- 具体执行红线统一维护在同级目录 `~/ai-agent-config/config/force/collaboration-rule.md`
+- 代码开发、文档编写等相关任务时，必须读取并遵守 `collaboration-rule.md`。
+- `collaboration-rule.md` 为最低优先级兜底规则；若本文件、项目规则或用户明确要求与其冲突，优先遵守更具体的约束。
 
 # 技能位置
 - 当用户提到 `Codex 技能`、`Codex 全局 skills`、`Codex skills 目录` 时，默认对应本地目录 `~/.codex/skills/`。

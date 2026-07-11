@@ -1,0 +1,174 @@
+default_permission_mode = "yolo"
+
+# 高危操作保护规则（在 yolo 模式下仍要求确认或禁止）
+# 规则按顺序匹配，第一个命中的规则生效
+
+[[permission.rules]]
+decision = "deny"
+pattern = "Bash(rm -rf*)"
+reason = "禁止递归强制删除，防止误删关键数据"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*reboot*)"
+reason = "重启服务器需确认"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*shutdown*)"
+reason = "关机操作需确认"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*systemctl*)"
+reason = "系统服务操作会影响生产服务"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*service*)"
+reason = "系统服务操作会影响生产服务"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*apt*)"
+reason = "包管理会改变系统状态"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*yum*)"
+reason = "包管理会改变系统状态"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*dnf*)"
+reason = "包管理会改变系统状态"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*pip*)"
+reason = "包/依赖管理会改变系统状态"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*chmod*)"
+reason = "修改权限可能影响系统安全"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*chown*)"
+reason = "修改属主可能影响系统安全"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*fdisk*)"
+reason = "磁盘分区操作风险极高"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*mkfs*)"
+reason = "格式化操作会清空数据"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*dd*)"
+reason = "dd 操作可能覆盖关键数据"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*kill*)"
+reason = "终止进程可能影响生产服务"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*iptables*)"
+reason = "防火墙变更影响网络访问"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*firewall*)"
+reason = "防火墙变更影响网络访问"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*useradd*)"
+reason = "用户管理变更需确认"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*usermod*)"
+reason = "用户管理变更需确认"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*userdel*)"
+reason = "用户管理变更需确认"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Bash(*passwd*)"
+reason = "密码变更需确认"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/etc/*)"
+reason = "写入系统配置目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/usr/*)"
+reason = "写入系统程序目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/bin/*)"
+reason = "写入系统可执行目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/sbin/*)"
+reason = "写入系统可执行目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/lib/*)"
+reason = "写入系统库目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/lib64/*)"
+reason = "写入系统库目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/var/*)"
+reason = "写入系统数据目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/opt/*)"
+reason = "写入 /opt 可能影响已安装服务"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/root/*)"
+reason = "写入 root 用户目录"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/boot/*)"
+reason = "写入启动目录风险极高"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/sys/*)"
+reason = "写入 sys 伪文件系统"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/proc/*)"
+reason = "写入 proc 伪文件系统"
+
+[[permission.rules]]
+decision = "ask"
+pattern = "Write(/dev/*)"
+reason = "写入设备文件风险极高"
