@@ -1,6 +1,7 @@
 # 通用协作规则
 - 具体执行红线统一维护在同级目录 `~/ai-agent-config/config/force/collaboration-rule.md`
 - 代码开发、文档编写等相关任务时，必须读取并遵守 `collaboration-rule.md`。
+- 代码改动完成后，必须按通用协作规则和项目级开发规范审查改动代码是否满足其规则要求。
 - `collaboration-rule.md` 为最低优先级兜底规则；若本文件、项目规则或用户明确要求与其冲突，优先遵守更具体的约束。
 
 # 技能位置
