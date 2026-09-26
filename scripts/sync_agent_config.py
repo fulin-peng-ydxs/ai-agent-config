@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Sync repository agent instructions to Claude Code and Kimi Code."""
+"""Sync repository agent instructions to Codex, Claude Code, and Kimi Code."""
 
 from __future__ import annotations
 
@@ -70,11 +70,12 @@ def write_atomic(path: Path, content: bytes) -> None:
 
 def build_targets(args: argparse.Namespace) -> list[Target]:
     all_targets = {
+        "codex": Target("codex", expand_path(args.codex_root), "AGENTS.md"),
         "claude": Target("claude", expand_path(args.claude_root), "CLAUDE.md"),
         "kimi": Target("kimi", expand_path(args.kimi_root), "AGENTS.md"),
     }
     if args.target == "all":
-        return [all_targets["claude"], all_targets["kimi"]]
+        return [all_targets["codex"], all_targets["claude"], all_targets["kimi"]]
     return [all_targets[args.target]]
 
 
@@ -92,7 +93,7 @@ def sync_target(target: Target, content: bytes, dry_run: bool) -> str:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Sync config/AGENTS.md to Claude Code CLAUDE.md and Kimi Code AGENTS.md."
+        description="Sync config/AGENTS.md to Codex, Claude Code, and Kimi Code."
     )
     parser.add_argument(
         "--source",
@@ -100,9 +101,14 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--target",
-        choices=("all", "claude", "kimi"),
+        choices=("all", "codex", "claude", "kimi"),
         default="all",
         help="target tool to sync; defaults to all",
+    )
+    parser.add_argument(
+        "--codex-root",
+        default=os.environ.get("CODEX_HOME") or "~/.codex",
+        help="Codex config root; defaults to CODEX_HOME, then ~/.codex",
     )
     parser.add_argument(
         "--claude-root",
