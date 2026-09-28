@@ -4,10 +4,8 @@
 - `collaboration-rule.md` 为最低优先级兜底规则；若本文件、项目规则或用户明确要求与其冲突，优先遵守更具体的约束。
 
 # 技能位置
-- 当用户提到 `Codex 技能`、`Codex 全局 skills`、`Codex skills 目录` 时，默认对应本地目录 `~/.codex/skills/`。
-- 当用户提到 `Claude 技能`、`Claude 全局 skills`、`Claude skills 目录` 时，默认对应本地目录 `~/.claude/skills/`。
-- 当用户提到 `Kimi 技能`、`Kimi 全局 skills`、`Kimi skills 目录` 时，默认对应本地目录 `~/.agents/skills`。
-- 处理这三类请求时，优先直接使用上述固定目录，不再重复做全盘查找；除非用户明确说明使用其他目录。
+- Codex、Claude、Kimi 的全局技能目录分别为 `~/.codex/skills/`、`~/.claude/skills/`、`~/.agents/skills/`。
+- 用户提到对应的“技能”或“skills 目录”时，直接使用上述目录；明确指定其他目录时除外。
 
 # 强制要求
 - 任何代码改动完成后，第一，都必须以第三方视角对此次操作进行一次完整流程闭环的自审与修复操作，不然工作不能算完成。第二，必须按通用协作规则： `collaboration-rule.md`和对应项目中的开发规范：包括但不限于`DESIGN.md`等文档，来审查改动的内容是否严格遵守了对应规则的要求。第三，必须检查是否需要同步更新相关的开发规范等事实文档
