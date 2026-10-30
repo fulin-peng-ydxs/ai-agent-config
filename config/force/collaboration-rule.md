@@ -30,8 +30,8 @@
 
 ## Git 提交时
 
-- 执行 `git commit` 前，必须先使用 `git-commit-msg` 技能基于确认范围生成提交消息
-- 不得跳过 `git-commit-msg` 技能自行临时编写提交消息
+- 执行 `git commit` 前，必须先使用 `git-commit-message-authoring` 技能基于确认范围生成提交消息
+- 不得跳过 `git-commit-message-authoring` 技能自行临时编写提交消息
 
 ## 建文档目录时
 
