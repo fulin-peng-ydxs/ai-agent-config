@@ -5,6 +5,7 @@
 # 技能位置
 - Codex、Claude、Kimi 的全局技能目录分别为 `~/.codex/skills/`、`~/.claude/skills/`、`~/.agents/skills/`
 - 用户提到对应的“技能”或“skills 目录”时，直接使用上述目录；明确指定其他目录时除外
+- 维护技能时，默认只处理Codex，明确指定其他或在对应工作空间除外
 
 # 强制要求
 
